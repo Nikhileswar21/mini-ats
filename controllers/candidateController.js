@@ -1,20 +1,37 @@
-const candidate = require('../models/candidate');
+const Candidate = require('../models/candidate');
 
 
-let candidates = [
-    {
-        name : 'nikhil',
-        email : 'nikhil@gmail.com',
-        role : 'software engineer',
-        experience : '2 ',
-        status : 'applied'
-    }
-];
 
 exports.getallCandidates = async function(req, res){
-  
-   return res.status(200).json({candidates});
+   const candidate = await Candidate.find();
+   return res.status(200).json({candidate});
 }
 
+
+exports.getCandidateById = async function(req, res){
+    const candidateId = req.params.candidateId;
+    const foundCandidate = await Candidate.findById(candidateId);
+    if (!foundCandidate) {
+        return res.status(404).json({message: 'Candidate not found'});
+    }
+    console.log(`candidate with id ${candidateId} retrieved`);
+    return res.status(200).json({candidate: foundCandidate}); 
+}
+
+exports.createCandidate = async function(req, res){
+    const candidateData = req.body;
+    await Candidate.create(candidateData);
+    return res.status(201).json('sucess');
+}
+
+
+exports.deleteCandidate = async function(req, res){
+    const candidateId = req.params.candidateId;
+    const deleteCandidate = await Candidate.findByIdAndDelete(candidateId);
+    if (!deleteCandidate) {
+        return res.status(404).json({ message: 'Candidate not found' });
+    }
+    return res.status(200).json({ message: 'Candidate deleted' });   
+}
 
 

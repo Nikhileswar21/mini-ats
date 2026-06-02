@@ -1,9 +1,15 @@
 const express = require('express');
-const {getallCandidates} = require('../controllers/candidateController')
+const {getallCandidates, getCandidateById, createCandidate, deleteCandidate} = require('../controllers/candidateController')
 const router = express.Router();
 
 
 router.get('/', getallCandidates);
+
+router.get('/:candidateId', getCandidateById);
+
+router.post('/', createCandidate);
+
+router.delete('/:candidateId', deleteCandidate);
 
 
 

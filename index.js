@@ -10,7 +10,7 @@ mongoose.connect('mongodb://localhost:27017/miniAts')
 .catch((err) =>{console.log('error connnecting to the database', err)});
 
 
-
+app.use(express.json());
 app.use('/candidates', router);
 
 app.listen(8000, ()=>{
