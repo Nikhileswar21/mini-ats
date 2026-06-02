@@ -35,3 +35,17 @@ exports.deleteCandidate = async function(req, res){
 }
 
 
+exports.deleteAllCandidate = async function(req, res){
+    await Candidate.deleteMany({});
+    return res.status(200).json({message: 'All candidates deleted'});
+}
+
+exports.updateCandidate = async function(req, res){
+    const candidateId = req.params.candidateId;
+    const updateData = req.body;
+    const updatedCandidate = await Candidate.findByIdAndUpdate(candidateId, updateData, { new: true });
+    if (!updatedCandidate) {
+        return res.status(404).json({ message: 'Candidate not found' });
+    }
+    return res.status(200).json({ candidate: updatedCandidate });
+}
