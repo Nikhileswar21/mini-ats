@@ -42,12 +42,69 @@ exports.deleteCandidate = async function(req, res){
 
 
 
-exports.updateCandidate = async function(req, res){
-    const candidateId = req.params.candidateId;
-    const updateData = req.body;
-    const updatedCandidate = await Candidate.findByIdAndUpdate(candidateId, updateData, { new: true });
-    if (!updatedCandidate) {
-        return res.status(404).json({ message: 'Candidate not found' });
+const sendEmail = require("../utils/sendEmail");
+
+exports.updateCandidate = async function(req, res) {
+  const candidateId = req.params.candidateId;
+
+  const updateData = req.body;
+
+  const updatedCandidate =
+    await Candidate.findByIdAndUpdate(
+      candidateId,
+      updateData,
+      { new: true }
+    );
+
+  if (!updatedCandidate) {
+    return res.status(404).json({
+      message: "Candidate not found",
+    });
+  }
+
+  if (updateData.status) {
+    let subject = "";
+    let message = "";
+
+    switch (updateData.status) {
+      case "Shortlisted":
+        subject = "Application Shortlisted";
+        message =
+          "Congratulations! You have been shortlisted for the next round.";
+        break;
+
+      case "Interview":
+        subject = "Interview Scheduled";
+        message =
+          "Your interview has been scheduled.";
+        break;
+
+      case "Selected":
+        subject = "Application Selected";
+        message =
+          "Congratulations! You have been selected.";
+        break;
+
+      case "Rejected":
+        subject = "Application Update";
+        message =
+          "Thank you for applying. We have decided to proceed with other candidates.";
+        break;
+
+      default:
+        break;
     }
-    return res.status(200).json({ candidate: updatedCandidate });
-}
+
+    if (subject) {
+      await sendEmail(
+        updatedCandidate.email,
+        subject,
+        message
+      );
+    }
+  }
+
+  return res.status(200).json({
+    candidate: updatedCandidate,
+  });
+};
