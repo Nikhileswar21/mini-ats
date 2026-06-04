@@ -1,4 +1,5 @@
 const Candidate = require('../models/candidate');
+const sendEmail = require("../utils/sendEmail");
 
 
 
@@ -42,7 +43,7 @@ exports.deleteCandidate = async function(req, res){
 
 
 
-const sendEmail = require("../utils/sendEmail");
+
 
 exports.updateCandidate = async function(req, res) {
   const candidateId = req.params.candidateId;
