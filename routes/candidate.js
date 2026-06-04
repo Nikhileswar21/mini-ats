@@ -14,9 +14,9 @@ router.get('/:candidateId', getCandidateById);
 
 router.post('/', createCandidate);
 
-router.delete('/:candidateId', deleteCandidate);
+router.delete('/delete-all', deleteAllCandidate);
 
-router.delete('/', deleteAllCandidate);
+router.delete('/:candidateId', deleteCandidate);
 
 router.put('/:candidateId', updateCandidate);
 

@@ -24,6 +24,11 @@ exports.createCandidate = async function(req, res){
     return res.status(201).json('sucess');
 }
 
+exports.deleteAllCandidate = async function(req, res){
+    await Candidate.deleteMany({});
+    return res.status(200).json({message: 'All candidates deleted'});
+}
+
 
 exports.deleteCandidate = async function(req, res){
     const candidateId = req.params.candidateId;
@@ -35,10 +40,7 @@ exports.deleteCandidate = async function(req, res){
 }
 
 
-exports.deleteAllCandidate = async function(req, res){
-    await Candidate.deleteMany({});
-    return res.status(200).json({message: 'All candidates deleted'});
-}
+
 
 exports.updateCandidate = async function(req, res){
     const candidateId = req.params.candidateId;
